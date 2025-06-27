@@ -14,3 +14,28 @@ body {
     margin: 0;
     background: #fafafa;
 }
+
+/* Hide the default inline SVG logo */
+.topbar-wrapper .link svg {
+    display: none;
+}
+
+/* Add your own logo as a background or inline image */
+.topbar-wrapper .link::before {
+    content: '';
+    display: inline-block;
+    width: 150px;
+    height: 40px;
+    background: url('https://chhj-public-assets.s3.amazonaws.com/image/logo/chhj-logo.png') no-repeat center center;
+    background-size: contain;
+    margin-right: 10px;
+}
+
+/* Brand primary color */
+.swagger-ui .topbar {
+    background-color: #226937 !important;
+}
+
+.swagger-ui .topbar .download-url-wrapper .download-url-button {
+    background: #EA7200 !important;
+}
