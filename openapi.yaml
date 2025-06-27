@@ -7,6 +7,7 @@ info:
     upon receipt. If your integration involves a live transfer or you prefer not to trigger an outbound call, please coordinate with the
     CHHJ team to support alternate routing. All partners must complete integration testing using the training server (`https://training.api.chhj.com`)
     before being permitted to send data to the production server.
+  version: "1.0.0"
 
 servers:
   - url: https://api.chhj.com
