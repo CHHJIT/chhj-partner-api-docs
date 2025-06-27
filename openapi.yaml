@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  title: CHHJ Partner Lead API
+  description: >
+    Endpoint for creating a new partner lead account and scheduling an outbound call for immediate follow-up during business hours.
+    This API is typically used by partners to submit lead information in real-time. The system automatically initiates a call to the lead
+    upon receipt. If your integration involves a live transfer or you prefer not to trigger an outbound call, please coordinate with the
+    CHHJ team to support alternate routing.
+
+servers:
+  - url: https://api.chhj.com
+
+paths:
+  /rest/v1/partners/lead:
+    post:
+      summary: Create Partner Lead
+      description: >
+        Creates a new partner lead account and initiates an outbound call to the lead during normal business hours.
+        By default, this API is used for real-time lead intake with immediate contact attempts.
+        Partners who prefer not to trigger a call (e.g., if they are transferring a call live) can work with the CHHJ team
+        to set a no-call flag or alternate routing.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - first_name
+                - last_name
+                - phone
+                - postal
+                - country
+                - service_type
+              properties:
+                first_name:
+                  type: string
+                  example: John
+                last_name:
+                  type: string
+                  example: Doe
+                phone:
+                  type: string
+                  example: "5551234567"
+                email:
+                  type: string
+                  format: email
+                  example: john.doe@example.com
+                tracking:
+                  type: object
+                  description: >
+                    UTM tracking parameters used for campaign attribution.
+                  properties:
+                    source:
+                      type: string
+                      example: example.com
+                    medium:
+                      type: string
+                      example: referral
+                    content:
+                      type: string
+                      description: >
+                        Optional. Use this to store a partner-specific ID or reference code.
+                        This ID will be returned in reporting to help with attribution and reconciliation.
+                      example: partner-client-id-1234
+                    campaign:
+                      type: string
+                      example: spring-special
+                    keyword:
+                      type: string
+                      example: junk removal
+                notes:
+                  type: object
+                  properties:
+                    information:
+                      type: string
+                      example: Lead requested same-day service and has large appliances.
+                address:
+                  type: string
+                  example: 123 Main Street
+                address2:
+                  type: string
+                  example: Apt 4B
+                city:
+                  type: string
+                  example: San Francisco
+                state:
+                  type: string
+                  example: CA
+                postal:
+                  type: string
+                  example: "94103"
+                country:
+                  type: string
+                  example: US
+                account_type:
+                  type: integer
+                  description: >
+                    Optional. Type of account:
+                    - `3` = Commercial
+                    - `5` = Residential (default)
+                  enum: [3, 5]
+                  example: 5
+                referral_source:
+                  type: integer
+                  description: >
+                    Optional. Internal referral source ID.
+                    This will be provided by the CHHJ team if needed.
+                  example: 104
+                service_type:
+                  type: integer
+                  description: >
+                    Required. Type of service requested:
+                    - `1` = Junk Removal
+                    - `4` = General Labor Services
+                    - `5` = Moving
+                    - `7` = Move Labor/Packing
+                  enum: [1, 4, 5, 7]
+                  example: 1
+                subpartner_token:
+                  type: string
+                  description: >
+                    Optional token used for partner attribution. This will be provided by the CHHJ team if applicable.
+                  example: xyz123token987
+      responses:
+        '200':
+          description: Lead successfully created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  meta:
+                    type: object
+                    properties:
+                      account_id:
+                        type: integer
+                        example: 45678
+                      location_id:
+                        type: integer
+                        example: 12345
+                      series:
+                        type: string
+                        description: >
+                          A unique identifier for the API request.
+                          This can be shared with the CHHJ support team to assist with debugging or tracking specific requests.
+                        example: SYIZDJ-79CE-TTJL0Q
+        '400':
+          description: Bad Request — Invalid or missing input
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYIZF5-7AS0-R1OH6A"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 400
+                    code: 400
+                    name: "Bad Request"
+                    description: "This request is missing data or contains invalid information."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "DATA input \"first_name\" was not set"
+        '401':
+          description: Unauthorized — Missing token
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYIZDJ-79CE-TTJL0Q"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 401
+                    code: 401
+                    name: "Unauthorized"
+                    description: "This request requires the user to login."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "Login Failed"
+        '403':
+          description: Unauthorized — Invalid token supplied
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYJ04P-DX5R-MACIAP"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 403
+                    code: 403
+                    name: "Forbidden"
+                    description: "The user does not have permission to perform this request."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "Invalid token supplied"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: string
