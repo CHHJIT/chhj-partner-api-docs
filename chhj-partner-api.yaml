@@ -185,7 +185,7 @@ paths:
                     - type: "E_USER_ERROR"
                       message: "Login Failed"
         '403':
-          description: Unauthorized — Invalid token supplied
+          description: Forbidden — Invalid token supplied
           content:
             application/json:
               example:
