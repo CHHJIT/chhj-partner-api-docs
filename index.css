@@ -36,6 +36,7 @@ body {
     background-color: #226937 !important;
 }
 
-.swagger-ui .topbar .download-url-wrapper .download-url-button {
-    background: #EA7200 !important;
+/* Hide the URL input box and Explore button */
+.swagger-ui .topbar .download-url-wrapper {
+    display: none;
 }
