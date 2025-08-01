@@ -53,35 +53,27 @@ paths:
                   type: string
                   format: email
                   example: john.doe@example.com
-                tracking:
-                  type: object
+                source:
+                  type: string
+                  example: example.com
+                medium:
+                  type: string
+                  example: referral
+                content:
+                  type: string
                   description: >
-                    UTM tracking parameters used for campaign attribution.
-                  properties:
-                    source:
-                      type: string
-                      example: example.com
-                    medium:
-                      type: string
-                      example: referral
-                    content:
-                      type: string
-                      description: >
-                        Optional. Use this to store a partner-specific ID or reference code.
-                        This ID will be returned in reporting to help with attribution and reconciliation.
-                      example: partner-client-id-1234
-                    campaign:
-                      type: string
-                      example: spring-special
-                    keyword:
-                      type: string
-                      example: junk removal
+                    Optional. Use this to store a partner-specific ID or reference code.
+                    This ID will be returned in reporting to help with attribution and reconciliation.
+                  example: partner-client-id-1234
+                campaign:
+                  type: string
+                  example: spring-special
+                keyword:
+                  type: string
+                  example: junk removal
                 notes:
-                  type: object
-                  properties:
-                    information:
-                      type: string
-                      example: Lead requested same-day service and has large appliances.
+                  type: string
+                  example: Lead requested same-day service and has large appliances.
                 address:
                   type: string
                   example: 123 Main Street
