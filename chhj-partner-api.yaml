@@ -3,17 +3,18 @@ info:
   title: CHHJ Partner Lead API
   description: >
     Endpoint for creating a new partner lead account and scheduling an outbound call for immediate follow-up during business hours.
-    This API is typically used by partners to submit lead information in real-time. The system automatically initiates a call to the lead
-    upon receipt. If your integration involves a live transfer or you prefer not to trigger an outbound call, please coordinate with the
-    CHHJ team to support alternate routing. All partners must complete integration testing using the training server (`https://training.api.chhj.com`)
+    This API is used for real-time lead intake with immediate contact attempts. Partners who prefer not to trigger a call
+    (e.g., if transferring a call live) can coordinate with the CHHJ team to set a no-call flag or plan alternate routing.
+    All partners must complete integration testing using the training server (`https://training.api.chhj.com`)
     before being permitted to send data to the production server.
+    Contact AppDev at CHHJ to obtain your `bearer token`, `referral_source`, `source`, and `subpartner_token`.
   version: "1.0.0"
 
 servers:
-  - url: https://api.chhj.com
-    description: Production server
   - url: https://training.api.chhj.com
     description: Training / Testing server
+  - url: https://api.chhj.com
+    description: Production server
 
 paths:
   /rest/v1/partners/lead:
@@ -21,9 +22,6 @@ paths:
       summary: Create Partner Lead
       description: >
         Creates a new partner lead account and initiates an outbound call to the lead during normal business hours.
-        By default, this API is used for real-time lead intake with immediate contact attempts.
-        Partners who prefer not to trigger a call (e.g., if they are transferring a call live) can work with the CHHJ team
-        to set a no-call flag or alternate routing.
       security:
         - bearerAuth: []
       requestBody:
@@ -36,9 +34,19 @@ paths:
                 - first_name
                 - last_name
                 - phone
+                - email
+                - address
+                - address2
+                - city
+                - state
                 - postal
                 - country
                 - service_type
+                - account_type
+                - medium
+                - referral_source
+                - source
+                - subpartner_token
               properties:
                 first_name:
                   type: string
@@ -48,79 +56,92 @@ paths:
                   example: Doe
                 phone:
                   type: string
+                  description: Lead's phone number (digits only)
                   example: "5551234567"
                 email:
                   type: string
                   format: email
                   example: john.doe@example.com
-                source:
-                  type: string
-                  example: example.com
-                medium:
-                  type: string
-                  example: referral
-                content:
-                  type: string
-                  description: >
-                    Optional. Use this to store a partner-specific ID or reference code.
-                    This ID will be returned in reporting to help with attribution and reconciliation.
-                  example: partner-client-id-1234
-                campaign:
-                  type: string
-                  example: spring-special
-                keyword:
-                  type: string
-                  example: junk removal
-                notes:
-                  type: string
-                  example: Lead requested same-day service and has large appliances.
                 address:
                   type: string
-                  example: 123 Main Street
+                  example: 11276 Cakeeater Rd
                 address2:
                   type: string
+                  description: Additional address info (e.g., Apt #)
                   example: Apt 4B
                 city:
                   type: string
-                  example: San Francisco
+                  example: Barrow
                 state:
                   type: string
-                  example: CA
+                  description: State or province
+                  example: AK
                 postal:
                   type: string
-                  example: "94103"
+                  description: Postal/ZIP code
+                  example: "99723"
                 country:
                   type: string
+                  description: Country code (e.g., US)
                   example: US
-                account_type:
-                  type: integer
-                  description: >
-                    Optional. Type of account:
-                    - `3` = Commercial
-                    - `5` = Residential (default)
-                  enum: [3, 5]
-                  example: 5
-                referral_source:
-                  type: integer
-                  description: >
-                    Optional. Internal referral source ID.
-                    This will be provided by the CHHJ team if needed.
-                  example: 104
                 service_type:
                   type: integer
                   description: >
-                    Required. Type of service requested:
+                    Type of service requested:
                     - `1` = Junk Removal
                     - `4` = General Labor Services
                     - `5` = Moving
                     - `7` = Move Labor/Packing
                   enum: [1, 4, 5, 7]
                   example: 1
+                account_type:
+                  type: integer
+                  description: >
+                    Type of account:
+                    - `3` = Commercial
+                    - `5` = Residential
+                  enum: [3, 5]
+                  example: 5
+                medium:
+                  type: string
+                  description: Traffic medium (e.g., referral)
+                  example: referral
+                referral_source:
+                  type: string
+                  description: >
+                    Internal referral source ID. Provided by the CHHJ team.
+                    Corresponds to `Tbl_Campaign_Source.Source_ID`.
+                  example: "104"
+                source:
+                  type: string
+                  description: >
+                    Source name. Provided by the CHHJ team.
+                    Corresponds to `Tbl_Campaign_Source.SourceName`.
+                  example: example.com
                 subpartner_token:
                   type: string
                   description: >
-                    Optional token used for partner attribution. This will be provided by the CHHJ team if applicable.
-                  example: xyz123token987
+                    Token used for sub-partner attribution. Provided by the CHHJ team.
+                    Corresponds to `tbl_partner_sub_accounts.subpartner_token`.
+                  example: 435E1AC
+                content:
+                  type: string
+                  description: >
+                    Unique identifier from the partner (e.g., client ID).
+                    Returned in reporting to help with attribution and reconciliation.
+                  example: partner-client-id-1234
+                campaign:
+                  type: string
+                  description: Marketing campaign name
+                  example: spring-special
+                keyword:
+                  type: string
+                  description: Keyword used in UTM or tracking
+                  example: junk removal
+                notes:
+                  type: string
+                  description: Additional info for agents (e.g., special requests, service details)
+                  example: Lead requested same-day service and has large appliances.
       responses:
         '200':
           description: Lead successfully created
