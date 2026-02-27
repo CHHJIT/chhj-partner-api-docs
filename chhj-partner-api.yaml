@@ -50,124 +50,7 @@ paths:
               keyword: junk removal
               notes: Lead requested same-day service and has large appliances.
             schema:
-              type: object
-              required:
-                - first_name
-                - last_name
-                - phone
-                - email
-                - address
-                - address2
-                - city
-                - state
-                - postal
-                - country
-                - service_type
-                - account_type
-                - medium
-                - referral_source
-                - source
-                - subpartner_token
-              properties:
-                first_name:
-                  type: string
-                  description: Lead's first name
-                  example: John
-                last_name:
-                  type: string
-                  description: Lead's last name
-                  example: Doe
-                phone:
-                  type: string
-                  description: Lead's phone number (digits only)
-                  example: "5551234567"
-                email:
-                  type: string
-                  format: email
-                  description: Lead's email address
-                  example: john.doe@example.com
-                address:
-                  type: string
-                  description: Street address
-                  example: 11276 Cakeeater Rd
-                address2:
-                  type: string
-                  description: Additional address info (e.g., Apt #)
-                  example: Apt 4B
-                city:
-                  type: string
-                  description: City
-                  example: Barrow
-                state:
-                  type: string
-                  description: State or province
-                  example: AK
-                postal:
-                  type: string
-                  description: Postal/ZIP code
-                  example: "99723"
-                country:
-                  type: string
-                  description: Country code (e.g., US)
-                  example: US
-                service_type:
-                  type: integer
-                  description: >
-                    Type of service requested:
-                    - `1` = Junk Removal
-                    - `4` = General Labor Services
-                    - `5` = Moving
-                    - `7` = Move Labor/Packing
-                  enum: [1, 4, 5, 7]
-                  example: 1
-                account_type:
-                  type: integer
-                  description: >
-                    Type of account:
-                    - `3` = Commercial
-                    - `5` = Residential
-                  enum: [3, 5]
-                  example: 5
-                medium:
-                  type: string
-                  description: Traffic medium (e.g., referral)
-                  example: referral
-                referral_source:
-                  type: string
-                  description: >
-                    Internal referral source ID. Provided by the CHHJ team.
-                    Corresponds to `Tbl_Campaign_Source.Source_ID`.
-                  example: "104"
-                source:
-                  type: string
-                  description: >
-                    Source name. Provided by the CHHJ team.
-                    Corresponds to `Tbl_Campaign_Source.SourceName`.
-                  example: example.com
-                subpartner_token:
-                  type: string
-                  description: >
-                    Token used for sub-partner attribution. Provided by the CHHJ team.
-                    Corresponds to `tbl_partner_sub_accounts.subpartner_token`.
-                  example: 435E1AC
-                content:
-                  type: string
-                  description: >
-                    Unique identifier from the partner (e.g., client ID).
-                    Returned in reporting to help with attribution and reconciliation.
-                  example: partner-client-id-1234
-                campaign:
-                  type: string
-                  description: Marketing campaign name
-                  example: spring-special
-                keyword:
-                  type: string
-                  description: Keyword used in UTM or tracking
-                  example: junk removal
-                notes:
-                  type: string
-                  description: Additional info for agents (e.g., special requests, service details)
-                  example: Lead requested same-day service and has large appliances.
+              $ref: '#/components/schemas/PartnerLeadRequest'
       responses:
         '200':
           description: Lead successfully created
@@ -241,6 +124,126 @@ paths:
                       message: "Invalid token supplied"
 
 components:
+  schemas:
+    PartnerLeadRequest:
+      type: object
+      required:
+        - first_name
+        - last_name
+        - phone
+        - email
+        - address
+        - address2
+        - city
+        - state
+        - postal
+        - country
+        - service_type
+        - account_type
+        - medium
+        - referral_source
+        - source
+        - subpartner_token
+      properties:
+        first_name:
+          type: string
+          description: Lead's first name
+          example: John
+        last_name:
+          type: string
+          description: Lead's last name
+          example: Doe
+        phone:
+          type: string
+          description: Lead's phone number (digits only)
+          example: "5551234567"
+        email:
+          type: string
+          format: email
+          description: Lead's email address
+          example: john.doe@example.com
+        address:
+          type: string
+          description: Street address
+          example: 11276 Cakeeater Rd
+        address2:
+          type: string
+          description: Additional address info (e.g., Apt #)
+          example: Apt 4B
+        city:
+          type: string
+          description: City
+          example: Barrow
+        state:
+          type: string
+          description: State or province
+          example: AK
+        postal:
+          type: string
+          description: Postal/ZIP code
+          example: "99723"
+        country:
+          type: string
+          description: Country code (e.g., US)
+          example: US
+        service_type:
+          type: integer
+          description: >
+            Type of service requested:
+            - `1` = Junk Removal
+            - `4` = General Labor Services
+            - `5` = Moving
+            - `7` = Move Labor/Packing
+          enum: [1, 4, 5, 7]
+          example: 1
+        account_type:
+          type: integer
+          description: >
+            Type of account:
+            - `3` = Commercial
+            - `5` = Residential
+          enum: [3, 5]
+          example: 5
+        medium:
+          type: string
+          description: Traffic medium (e.g., referral)
+          example: referral
+        referral_source:
+          type: string
+          description: >
+            Internal referral source ID. Provided by the CHHJ team.
+            Corresponds to `Tbl_Campaign_Source.Source_ID`.
+          example: "104"
+        source:
+          type: string
+          description: >
+            Source name. Provided by the CHHJ team.
+            Corresponds to `Tbl_Campaign_Source.SourceName`.
+          example: example.com
+        subpartner_token:
+          type: string
+          description: >
+            Token used for sub-partner attribution. Provided by the CHHJ team.
+            Corresponds to `tbl_partner_sub_accounts.subpartner_token`.
+          example: 435E1AC
+        content:
+          type: string
+          description: >
+            Unique identifier from the partner (e.g., client ID).
+            Returned in reporting to help with attribution and reconciliation.
+          example: partner-client-id-1234
+        campaign:
+          type: string
+          description: Marketing campaign name
+          example: spring-special
+        keyword:
+          type: string
+          description: Keyword used in UTM or tracking
+          example: junk removal
+        notes:
+          type: string
+          description: Additional info for agents (e.g., special requests, service details)
+          example: Lead requested same-day service and has large appliances.
   securitySchemes:
     bearerAuth:
       type: http
