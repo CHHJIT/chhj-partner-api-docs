@@ -28,6 +28,27 @@ paths:
         required: true
         content:
           application/json:
+            example:
+              first_name: John
+              last_name: Doe
+              phone: "5551234567"
+              email: john.doe@example.com
+              address: 11276 Cakeeater Rd
+              address2: Apt 4B
+              city: Barrow
+              state: AK
+              postal: "99723"
+              country: US
+              service_type: 1
+              account_type: 5
+              medium: referral
+              referral_source: "104"
+              source: example.com
+              subpartner_token: xyz123token987
+              content: partner-client-id-1234
+              campaign: spring-special
+              keyword: junk removal
+              notes: Lead requested same-day service and has large appliances.
             schema:
               type: object
               required:
@@ -50,9 +71,11 @@ paths:
               properties:
                 first_name:
                   type: string
+                  description: Lead's first name
                   example: John
                 last_name:
                   type: string
+                  description: Lead's last name
                   example: Doe
                 phone:
                   type: string
@@ -61,9 +84,11 @@ paths:
                 email:
                   type: string
                   format: email
+                  description: Lead's email address
                   example: john.doe@example.com
                 address:
                   type: string
+                  description: Street address
                   example: 11276 Cakeeater Rd
                 address2:
                   type: string
@@ -71,6 +96,7 @@ paths:
                   example: Apt 4B
                 city:
                   type: string
+                  description: City
                   example: Barrow
                 state:
                   type: string
