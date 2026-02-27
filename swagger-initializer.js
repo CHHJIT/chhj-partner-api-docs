@@ -8,8 +8,8 @@ window.onload = function() {
     deepLinking: true,
     docExpansion: "full",
     defaultModelRendering: "model",
-    defaultModelsExpandDepth: -1,
-    defaultModelExpandDepth: -1,
+    defaultModelsExpandDepth: 10,
+    defaultModelExpandDepth: 10,
     presets: [
       SwaggerUIBundle.presets.apis,
       SwaggerUIStandalonePreset
