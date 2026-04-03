@@ -12,11 +12,93 @@ info:
 
 servers:
   - url: https://training.api.chhj.com
-    description: Training / Testing server
+    description: Testing server
   - url: https://api.chhj.com
     description: Production server
 
 paths:
+  /v1/servicecheck:
+    post:
+      summary: Service Check
+      description: >
+        Verifies whether CHHJ services are available for a given postal code and job category.
+        Call this endpoint before submitting a lead to confirm the area is serviceable.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              postal: "99723"
+              job_category_id: 5
+            schema:
+              $ref: '#/components/schemas/ServiceCheckRequest'
+      responses:
+        '200':
+          description: Service availability result
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    description: >
+                      The franchise location ID serving the provided postal code.
+                      A non-null value indicates the area is serviceable.
+                    example: 12345
+              example:
+                id: 12345
+        '400':
+          description: Bad Request — Invalid or missing input
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYIZF5-7AS0-R1OH6A"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 400
+                    code: 400
+                    name: "Bad Request"
+                    description: "This request is missing data or contains invalid information."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "DATA input \"postal\" was not set"
+        '401':
+          description: Unauthorized — Missing token
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYIZDJ-79CE-TTJL0Q"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 401
+                    code: 401
+                    name: "Unauthorized"
+                    description: "This request requires the user to login."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "Login Failed"
+        '403':
+          description: Forbidden — Invalid token supplied
+          content:
+            application/json:
+              example:
+                meta:
+                  series: "SYJ04P-DX5R-MACIAP"
+                  instance: "PRODUCTION-10.10.102.92"
+                  status:
+                    id: 403
+                    code: 403
+                    name: "Forbidden"
+                    description: "The user does not have permission to perform this request."
+                  errors:
+                    - type: "E_USER_ERROR"
+                      message: "Invalid token supplied"
+
   /rest/v1/partners/lead:
     post:
       summary: Create Partner Lead
@@ -125,6 +207,27 @@ paths:
 
 components:
   schemas:
+    ServiceCheckRequest:
+      type: object
+      required:
+        - postal
+        - job_category_id
+      properties:
+        postal:
+          type: string
+          description: Postal/ZIP code to check for service availability
+          example: "99723"
+        job_category_id:
+          type: integer
+          description: >
+            Job category to verify availability for:
+            - `1` = Junk Removal
+            - `4` = General Labor Services
+            - `5` = Moving
+            - `7` = Move Labor/Packing
+          enum: [1, 4, 5, 7]
+          example: 5
+
     PartnerLeadRequest:
       type: object
       required:
