@@ -23,6 +23,17 @@ paths:
       description: >
         Verifies whether CHHJ services are available for a given postal code and job category.
         Call this endpoint before submitting a lead to confirm the area is serviceable.
+      x-codeSamples:
+        - lang: curl
+          label: cURL
+          source: |
+            curl -X POST https://training.api.chhj.com/v1/servicecheck \
+              -H "Authorization: Bearer YOUR_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "postal": "99723",
+                "job_category_id": 5
+              }'
       security:
         - bearerAuth: []
       requestBody:
@@ -104,6 +115,35 @@ paths:
       summary: Create Partner Lead
       description: >
         Creates a new partner lead account and initiates an outbound call to the lead during normal business hours.
+      x-codeSamples:
+        - lang: curl
+          label: cURL
+          source: |
+            curl -X POST https://training.api.chhj.com/rest/v1/partners/lead \
+              -H "Authorization: Bearer YOUR_TOKEN" \
+              -H "Content-Type: application/json" \
+              -d '{
+                "first_name": "John",
+                "last_name": "Doe",
+                "phone": "5551234567",
+                "email": "john.doe@example.com",
+                "address": "11276 Cakeeater Rd",
+                "address2": "Apt 4B",
+                "city": "Barrow",
+                "state": "AK",
+                "postal": "99723",
+                "country": "US",
+                "service_type": 1,
+                "account_type": 5,
+                "medium": "referral",
+                "referral_source": "104",
+                "source": "example.com",
+                "subpartner_token": "xyz123token987",
+                "content": "partner-client-id-1234",
+                "campaign": "spring-special",
+                "keyword": "junk removal",
+                "notes": "Lead requested same-day service and has large appliances."
+              }'
       security:
         - bearerAuth: []
       requestBody:
