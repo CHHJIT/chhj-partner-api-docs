@@ -2,12 +2,35 @@ openapi: 3.0.3
 info:
   title: CHHJ Partner Lead API
   description: >
-    Endpoint for creating a new partner lead account and scheduling an outbound call for immediate follow-up during business hours.
-    This API is used for real-time lead intake with immediate contact attempts. Partners who prefer not to trigger a call
-    (e.g., if transferring a call live) can coordinate with the CHHJ team to set a no-call flag or plan alternate routing.
+    This API provides two endpoints for partner lead integration with College Hunks Hauling Junk (CHHJ).
+
+
+    ## Service Check
+
+
+    Before submitting a lead, use the **Service Check** endpoint (`POST /api/v1/servicecheck`) to verify that CHHJ
+    services are available in the lead's area. Supply the lead's postal/ZIP code and the desired `job_category_id`
+    (e.g., `1` for Junk Removal, `5` for Moving). A successful response returns the franchise location ID (`id`)
+    serving that area — a non-null value means the area is serviceable. If the area is not covered, do not submit
+    the lead.
+
+
+    ## Create Partner Lead
+
+
+    Once serviceability is confirmed, use the **Create Partner Lead** endpoint (`POST /rest/v1/partners/lead`) to
+    submit the lead. This creates a new lead account and schedules an outbound call during normal business hours.
+    Partners who prefer not to trigger a call (e.g., when transferring a live call) can coordinate with the CHHJ
+    team to set a no-call flag or plan alternate routing.
+
+
+    ## Getting Started
+
+
     All partners must complete integration testing using the training server (`https://training.api.chhj.com`)
     before being permitted to send data to the production server.
     Contact AppDev at CHHJ to obtain your `bearer token`, `referral_source`, `source`, and `subpartner_token`.
+    
   version: "1.0.0"
 
 servers:
@@ -17,7 +40,7 @@ servers:
     description: Production server
 
 paths:
-  /v1/servicecheck:
+  /api/v1/servicecheck:
     post:
       summary: Service Check
       description: >
@@ -27,7 +50,7 @@ paths:
         - lang: curl
           label: cURL
           source: |
-            curl -X POST https://training.api.chhj.com/v1/servicecheck \
+            curl -X POST https://training.api.chhj.com/api/v1/servicecheck \
               -H "Authorization: Bearer YOUR_TOKEN" \
               -H "Content-Type: application/json" \
               -d '{

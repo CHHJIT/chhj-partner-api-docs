@@ -7,7 +7,7 @@ window.onload = function() {
     dom_id: '#swagger-ui',
     deepLinking: true,
     docExpansion: "full",
-    defaultModelRendering: "model",
+    defaultModelRendering: "example",
     defaultModelsExpandDepth: 10,
     defaultModelExpandDepth: 10,
     presets: [
