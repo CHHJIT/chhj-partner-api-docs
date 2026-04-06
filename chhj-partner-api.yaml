@@ -39,9 +39,14 @@ servers:
   - url: https://api.chhj.com
     description: Production server
 
+tags:
+  - name: APIs
+
 paths:
   /api/v1/servicecheck:
     post:
+      tags:
+        - APIs
       summary: Service Check
       description: >
         Verifies whether CHHJ services are available for a given postal code and job category.
@@ -135,6 +140,8 @@ paths:
 
   /rest/v1/partners/lead:
     post:
+      tags:
+        - APIs
       summary: Create Partner Lead
       description: >
         Creates a new partner lead account and initiates an outbound call to the lead during normal business hours.

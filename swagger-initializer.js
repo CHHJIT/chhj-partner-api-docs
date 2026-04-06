@@ -6,7 +6,7 @@ window.onload = function() {
     url: "chhj-partner-api.yaml",
     dom_id: '#swagger-ui',
     deepLinking: true,
-    docExpansion: "full",
+    docExpansion: "list",
     defaultModelRendering: "example",
     defaultModelsExpandDepth: 10,
     defaultModelExpandDepth: 10,
