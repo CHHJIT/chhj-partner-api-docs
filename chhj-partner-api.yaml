@@ -304,19 +304,9 @@ components:
         - first_name
         - last_name
         - phone
-        - email
-        - address
-        - address2
-        - city
-        - state
         - postal
         - country
         - service_type
-        - account_type
-        - medium
-        - referral_source
-        - source
-        - subpartner_token
       properties:
         first_name:
           type: string
@@ -379,7 +369,18 @@ components:
           example: 5
         medium:
           type: string
-          description: Traffic medium (e.g., referral)
+          description: >
+            Traffic medium. Common values:
+            - `email` — email marketing campaigns
+            - `social` — social media posts or ads
+            - `cpc` — cost-per-click paid ads (Google Ads, Bing Ads, etc.)
+            - `referral` — traffic from other websites or partners
+            - `organic` — search engine results (SEO)
+            - `display` — display/banner ads
+            - `video` — video ads or content
+            - `ppc` — paid search (alternative to cpc)
+            - `newsletter` — email newsletters
+            - `inbound` — traffic from other inbound sources (e.g., blog backlinks)
           example: referral
         referral_source:
           type: string
